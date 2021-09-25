@@ -37,10 +37,10 @@ class LoginFrame extends JFrame implements ActionListener {
     private void setLocationAndSize() {
         titleLabel.setBounds(385, 100, 700, 70);
         passwordLabel.setBounds(610, 210, 100, 40);
-        password.setBounds(500, 260, 310, 30);
-        checkBox.setBounds(500, 300, 150, 30);
-        loginButton.setBounds(500, 340, 150, 30);
-        resetButton.setBounds(660, 340, 150, 30);
+        password.setBounds(500, 240, 310, 30);
+        checkBox.setBounds(500, 270, 150, 30);
+        loginButton.setBounds(500, 310, 150, 30);
+        resetButton.setBounds(660, 310, 150, 30);
     }
 
     private void addComponentsToContainer() {
@@ -53,27 +53,18 @@ class LoginFrame extends JFrame implements ActionListener {
     }
 
     private void setButtonColors() {
-        this.getContentPane().setBackground(new Color(26,26,26));
-        checkBox.setBackground(new Color(26,26,26));
-        checkBox.setForeground(new Color(255,255,255));
-        titleLabel.setForeground(new Color(255,255,255));
-        passwordLabel.setForeground(new Color(255,255,255));
-        password.setBackground(new Color(38,38,38));
-        password.setForeground(new Color(255,255,255));
-        password.setCaretColor(new Color(255,255,255));
-        loginButton.setForeground(new Color(0,255,0));
-        loginButton.setBackground(new Color(38,38,38));
-        resetButton.setBackground(new Color(38,38,38));
-        resetButton.setForeground(new Color(255,0,0));
+        loginButton.setBackground(new Color(153, 255, 51));
+        resetButton.setBackground(Color.darkGray);
+        resetButton.setForeground(Color.white);
     }
 
     private void setFontsProperties() {
-        titleLabel.setFont(new Font("Vardana", Font.BOLD, 45));
-        passwordLabel.setFont(new Font("Vardana", Font.BOLD, 20));
-        checkBox.setFont(new Font("Vardana", Font.BOLD, 15));
-        password.setFont(new Font("Vardana", Font.BOLD, 17));
-        loginButton.setFont(new Font("Vardana", Font.BOLD, 17));
-        resetButton.setFont(new Font("Vardana", Font.BOLD, 17));
+        titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 45));
+        passwordLabel.setFont(new Font("Times New Roman", Font.BOLD, 20));
+        checkBox.setFont(new Font("Times New Roman", Font.BOLD, 15));
+        password.setFont(new Font("Times New Roman", Font.BOLD, 17));
+        loginButton.setFont(new Font("Times New Roman", Font.BOLD, 17));
+        resetButton.setFont(new Font("Times New Roman", Font.BOLD, 17));
     }
 
     private void addActionEvent() {
@@ -84,7 +75,6 @@ class LoginFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         if (e.getSource() == checkBox) {
             if (checkBox.isSelected()) {
                 password.setEchoChar((char) 0);
@@ -111,12 +101,13 @@ class LoginFrame extends JFrame implements ActionListener {
 
             if (enteredPassword.equals(storedPassword)) {
                 this.setVisible(false);
-                Home obj =new Home();
-                obj.setVisible(true);
+                Home objHome = new Home();
+                objHome.setVisible(true);
             } else if (enteredPassword.equals("")) {
                 JOptionPane.showMessageDialog(this, "Password is empty.");
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid Password");
+                password.setText("");
             }
         }
 
@@ -143,7 +134,6 @@ class ResetPasswordFrame extends JFrame implements ActionListener {
         rpSetLocationAndSize();
         rpSetFrameBoundsAndTitle();
         rpSetVisibilityAndResize();
-        rpSetColorProperties();
         rpAddComponentsToContainer();
     }
 
@@ -152,8 +142,7 @@ class ResetPasswordFrame extends JFrame implements ActionListener {
     }
 
     private void rpSetButtonColor() {
-        changePasswordButton.setBackground(new Color(38,38,38));
-        changePasswordButton.setForeground(new Color(0,255,0));
+        changePasswordButton.setBackground(new Color(153, 255, 51));
     }
 
     private void rpAddActionEvent() {
@@ -161,9 +150,9 @@ class ResetPasswordFrame extends JFrame implements ActionListener {
     }
 
     private void rpSetFontsProperties() {
-        oldPasswordLabel.setFont(new Font("Vardana", Font.BOLD, 17));
-        newPasswordLabel.setFont(new Font("Vardana", Font.BOLD, 17));
-        changePasswordButton.setFont(new Font("Vardana", Font.BOLD, 18));
+        oldPasswordLabel.setFont(new Font("Times New Roman", Font.BOLD, 17));
+        newPasswordLabel.setFont(new Font("Times New Roman", Font.BOLD, 17));
+        changePasswordButton.setFont(new Font("Times New Roman", Font.BOLD, 18));
     }
 
     private void rpSetLocationAndSize() {
@@ -172,17 +161,6 @@ class ResetPasswordFrame extends JFrame implements ActionListener {
         newPasswordLabel.setBounds(20, 110, 200, 30);
         newPasswordField.setBounds(20, 150, 310, 30);
         changePasswordButton.setBounds(20, 210, 310, 35);
-    }
-
-    private void rpSetColorProperties() {
-        this.getContentPane().setBackground(new Color(26,26,26));
-        oldPasswordLabel.setForeground(new Color(255,255,255));
-        oldPasswordField.setBackground(new Color(38,38,38));
-        oldPasswordField.setForeground(new Color(255,255,255));
-        oldPasswordField.setCaretColor(new Color(255,255,255));
-        newPasswordField.setBackground(new Color(38,38,38));
-        newPasswordField.setForeground(new Color(255,255,255));
-        newPasswordField.setCaretColor(new Color(255,255,255));
     }
 
     private void rpSetFrameBoundsAndTitle() {
@@ -205,7 +183,7 @@ class ResetPasswordFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        CreateConn createConnection=CreateConn.estConnection();
+        CreateConn createConnection = CreateConn.estConnection();
         String enteredOldPassword = oldPasswordField.getText();
         String enteredNewPassword = newPasswordField.getText();
         String dbStoredPassword = "";
@@ -222,23 +200,26 @@ class ResetPasswordFrame extends JFrame implements ActionListener {
         }
 
         if (enteredOldPassword.equals(dbStoredPassword)) {
-            String updateQuery = "UPDATE Login SET PASSWORDKEY = ?;";
-            try {
-                try (PreparedStatement ps = createConnection.conn.prepareStatement(updateQuery)) {
-                    ps.setString(1, enteredNewPassword);
-                    ps.executeUpdate();
-                    JOptionPane.showMessageDialog(this, "Password changed Successfully.");
-                    setVisible(false);
+            if (enteredOldPassword.equals(enteredNewPassword)) {
+                JOptionPane.showMessageDialog(this, "New password is same as old password. Enter a different password", "Alert", JOptionPane.WARNING_MESSAGE);
+            } else {
+                String updateQuery = "UPDATE Login SET PASSWORDKEY = ?;";
+                try {
+                    try (PreparedStatement ps = createConnection.conn.prepareStatement(updateQuery)) {
+                        ps.setString(1, enteredNewPassword);
+                        ps.executeUpdate();
+                        JOptionPane.showMessageDialog(this, "Password changed Successfully.");
+                        setVisible(false);
+                    }
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
                 }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
             }
         } else if (enteredOldPassword.equals("") || enteredNewPassword.equals("")) {
             JOptionPane.showMessageDialog(this, "Any one password is empty.");
         } else {
             JOptionPane.showMessageDialog(this, "Invalid Old Password");
         }
-
     }
 }
 

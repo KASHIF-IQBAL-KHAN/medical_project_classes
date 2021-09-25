@@ -22,20 +22,20 @@ class DeleteMedicineFrame extends JFrame implements ActionListener {
         setLayoutManager();
         setLocationAndSize();
         addComponentsToContainer();
-        setColors();
+        setButtonColors();
         setFontsProperties();
         addActionEvent();
     }
 
     private void loadMedicineNames() {
         CreateConn createConnection = CreateConn.estConnection();
-        String query = "SElECT name FROM Medicines ORDER BY name ASC;";
+        String query = "SElECT MEDICINE_NAME FROM Medicines ORDER BY MEDICINE_NAME  ASC;";
         ResultSet resultSet;
         try {
             try (Statement statement = createConnection.conn.createStatement()) {
                 resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
-                    comboBox.addItem(resultSet.getString("name"));
+                    comboBox.addItem(resultSet.getString("MEDICINE_NAME"));
                 }
             }
         } catch (SQLException throwables) {
@@ -65,24 +65,19 @@ class DeleteMedicineFrame extends JFrame implements ActionListener {
         container.add(backToHomeButton);
     }
 
-    private void setColors() {
-        this.getContentPane().setBackground(new Color(26,26,26));
-        titleLabel.setForeground(new Color(255,255,255));
-        deleteButton.setBackground(new Color(38,38,38));
-        deleteButton.setForeground(new Color(255,0,0));
-        backToHomeButton.setBackground(new Color(38,38,38));
-        backToHomeButton.setForeground(new Color(255,255,255));
-        medicineLabel.setForeground(new Color(255,255,255));
-        comboBox.setBackground(new Color(38,38,38));
-        comboBox.setForeground(new Color(255,255,255));
+    private void setButtonColors() {
+        deleteButton.setBackground(new Color(223, 71, 89));
+        deleteButton.setForeground(Color.white);
+        backToHomeButton.setBackground(Color.darkGray);
+        backToHomeButton.setForeground(Color.white);
     }
 
     private void setFontsProperties() {
-        titleLabel.setFont(new Font("Vardana", Font.BOLD, 45));
-        medicineLabel.setFont(new Font("Vardana", Font.BOLD, 22));
-        comboBox.setFont(new Font("Vardana", Font.BOLD, 18));
-        deleteButton.setFont(new Font("Vardana", Font.BOLD, 16));
-        backToHomeButton.setFont(new Font("Vardana", Font.BOLD, 16));
+        titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 45));
+        medicineLabel.setFont(new Font("Times New Roman", Font.BOLD, 22));
+        comboBox.setFont(new Font("Times New Roman", Font.BOLD, 18));
+        deleteButton.setFont(new Font("Times New Roman", Font.BOLD, 16));
+        backToHomeButton.setFont(new Font("Times New Roman", Font.BOLD, 16));
     }
 
     private void addActionEvent() {
@@ -102,7 +97,7 @@ class DeleteMedicineFrame extends JFrame implements ActionListener {
             if (result == JOptionPane.YES_OPTION) {
                 CreateConn createConnection = CreateConn.estConnection();
                 String selectedMedicine = String.valueOf(comboBox.getSelectedItem());
-                String query = "DELETE FROM Medicines WHERE name = '" + selectedMedicine + "'";
+                String query = "DELETE FROM Medicines WHERE MEDICINE_NAME = '" + selectedMedicine + "'";
 
                 try {
                     try (Statement statement = createConnection.conn.createStatement()) {
